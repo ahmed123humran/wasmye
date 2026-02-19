@@ -1,8 +1,23 @@
 import Image from "next/image";
+import { getTranslations, setRequestLocale } from 'next-intl/server';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
-export default function Home() {
+export default async function Home({
+  params
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+
+  // Enable static rendering
+  setRequestLocale(locale);
+
+  const t = await getTranslations('ComingSoon');
+
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-stone-900 font-sans">
+      <LanguageSwitcher />
+
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0 text-white">
         <Image
@@ -31,15 +46,15 @@ export default function Home() {
         {/* Text Content */}
         <div className="space-y-6 max-w-2xl animate-fade-in">
           <h2 className="text-xl font-medium tracking-widest text-amber-500 uppercase">
-            قريباً في عالم الأصالة
+            {t('subtitle')}
           </h2>
 
           <h1 className="text-6xl md:text-8xl font-black text-white drop-shadow-2xl">
-            انتظرونا قريباً
+            {t('mainTitle')}
           </h1>
 
           <p className="mx-auto max-w-lg text-lg leading-relaxed text-stone-300 md:text-xl">
-            متجرنا الجديد للتحف والهدايا التراثية اليمنية قيد التحضير. سنأخذكم في رحلة عبر الزمن لنستعرض معاً جمال وعراقة التراث اليمني الأصيل.
+            {t('mainDescription')}
           </p>
         </div>
 
@@ -54,21 +69,21 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-stone-400 mt-8 mb-16 animate-fade-in">
           <div className="flex flex-col items-center">
             <span className="text-amber-500 text-2xl mb-2">🏺</span>
-            <span className="text-sm font-medium">تحف أثرية</span>
+            <span className="text-sm font-medium">{t('features.antiques')}</span>
           </div>
           <div className="flex flex-col items-center">
             <span className="text-amber-500 text-2xl mb-2">⚔️</span>
-            <span className="text-sm font-medium">خناجر وجنابي</span>
+            <span className="text-sm font-medium">{t('features.daggers')}</span>
           </div>
           <div className="flex flex-col items-center">
             <span className="text-amber-500 text-2xl mb-2">💍</span>
-            <span className="text-sm font-medium">فضيات يدوية</span>
+            <span className="text-sm font-medium">{t('features.silver')}</span>
           </div>
         </div>
 
         {/* Footer Info */}
         <footer className="mt-12 text-sm text-stone-500 tracking-wider">
-          &copy; {new Date().getFullYear()} متجر التراث اليمني. جميع الحقوق محفوظة.
+          &copy; {new Date().getFullYear()} {t('title')}. {t('copyright')}
         </footer>
       </main>
 
